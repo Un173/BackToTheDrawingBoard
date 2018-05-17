@@ -22,6 +22,7 @@ namespace BackToTheDrawingBoard.Controllers
         }
 
         // GET: api/Canvas
+        [Authorize]
         [HttpGet]
         public IEnumerable<Canvas> GetCanvas()
         {
@@ -29,6 +30,7 @@ namespace BackToTheDrawingBoard.Controllers
         }
 
         // GET: api/Canvas/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCanvas([FromRoute] int id)
         {
@@ -48,6 +50,7 @@ namespace BackToTheDrawingBoard.Controllers
         }
 
         // PUT: api/Canvas/5
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCanvas([FromRoute] int id, [FromBody] Canvas canvas)
         {
@@ -99,6 +102,7 @@ namespace BackToTheDrawingBoard.Controllers
         }
 
         // DELETE: api/Canvas/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCanvas([FromRoute] int id)
         {

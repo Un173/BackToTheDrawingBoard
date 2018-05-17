@@ -106,7 +106,8 @@ namespace BackToTheDrawingBoard.Controllers
                 return Ok(errorMsg);
             }
         }
-        [HttpPost]
+
+        [HttpGet]
         [Route("api/Account/LogOff")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()
@@ -114,10 +115,8 @@ namespace BackToTheDrawingBoard.Controllers
             // Удаление куки
             await _signInManager.SignOutAsync();
             var msg = new
-            {
-
-            
-message = "Выполнен выход."
+            {        
+                message = "Выполнен выход."
             };
             return Ok(msg);
         }

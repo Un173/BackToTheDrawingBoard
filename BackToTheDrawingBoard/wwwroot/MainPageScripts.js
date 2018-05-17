@@ -1,13 +1,26 @@
 ﻿function LoadCanvases() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onload = function (ev) {
+        var msg = ""
+        if (xmlhttp.status == 200) {
+            // msg = "Полотно создано"; 
+            canvases = JSON.parse(xmlhttp.responseText);
+            document.getElementById("canvasTable").innerHTML = "";
+            var x = "<tr><th>Id<\/th><th>Название<\/th><th>Ссылка<\/th> <\/tr >";
+            for (i in canvases) { x += "<tr><td class=\"col-md-2\">" + canvases[i].id + "<\/td>" + "<td class=\"col-md-2\">" + canvases[i].name + "<\/td>" + "<td class=\"col-md-2\">" + "<a href=\"\/canvas.html?id=" + canvases[i].id + "\">Ссылка<\/a>" + "<\/td><\/tr>"; }
+            document.getElementById("canvasTable").innerHTML += x;
+        } else {
+            msg = "У Вас недостаточно прав для просмотра списка полотен, войдите или зарегистрируйтесь.";
+            document.getElementById("canvasTable").innerHTML = msg;
+        }
+       
+    }
     var canvases;
-    var request = new XMLHttpRequest();
-    request.open("GET", "api/Canvas/", false);
-    request.send();
-    canvases = JSON.parse(request.responseText);
-    document.getElementById("canvasTable").innerHTML = "";
-    var x = "<tr><th>Id<\/th><th>Название<\/th><th>Ссылка<\/th> <\/tr >";
-    for (i in canvases) { x += "<tr><td class=\"col-md-2\">" + canvases[i].id + "<\/td>" + "<td class=\"col-md-2\">" + canvases[i].name + "<\/td>" + "<td class=\"col-md-2\">" + "<a href=\"\/canvas.html?id=" + canvases[i].id + "\">Ссылка<\/a>" + "<\/td><\/tr>";}
-    document.getElementById("canvasTable").innerHTML +=x;
+  //  var request = new XMLHttpRequest();
+    xmlhttp.open("GET", "api/Canvas/", false);
+    xmlhttp.send();
+    
+   
     
 }
 function Match(user, types)
@@ -125,7 +138,6 @@ function ParseResponseMsg() {
     password = document.getElementById("Password").value;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "/api/Account/Login");
-
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
 xmlhttp.onreadystatechange = function () {
@@ -146,9 +158,12 @@ xmlhttp.onreadystatechange = function () {
                     li.appendChild(document.createTextNode(myObj.error[i]));
                     ul[0].appendChild(li);
 
-                    13
-
                 }
+            }
+            else
+            {
+                $('#myLoginModal').modal('hide');
+                GetCurrentUser();
             }
             document.getElementById("Password").value = "";
         };
@@ -157,10 +172,64 @@ xmlhttp.onreadystatechange = function () {
         email: email,
         password: password
     }));
+}
+function ParseRegisterResponseMsg() {
+    email = document.getElementById("RegEmail").value;
+    password = document.getElementById("RegPassword").value;
+    passwordConfirm = document.getElementById("RegPasswordConfirm").value;
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "/api/account/Register");
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+    xmlhttp.onreadystatechange = function () {
+        // Очистка контейнера вывода сообщений
+        document.getElementById("Regmsg").innerHTML = ""
+        var mydiv = document.getElementById('RegformError');
+        while (mydiv.firstChild) {
+            mydiv.removeChild(mydiv.firstChild);
+        }
+
+        // Обработка ответа от сервера
+        myObj = JSON.parse(this.responseText);
+        document.getElementById("Regmsg").innerHTML = myObj.message;
+        // Вывод сообщений об ошибках
+        if (myObj.error.length > 0) {
+            for (var i = 0; i < myObj.error.length; i++) {
+                var ul = document.getElementsByTagName("ul");
+                var li = document.createElement("li");
+                li.appendChild(document.createTextNode(myObj.error[i]));
+                ul[0].appendChild(li);
+            }
+        }
+        else $('#myRegisterModal').modal('hide');
+        // Очистка полей поролей
+        document.getElementById("RegPassword").value = "";
+        document.getElementById("RegPasswordConfirm").value = "";
+    };
+    // Запрос на сервер
+    xmlhttp.send(JSON.stringify({
+        email: email,
+        password: password,
+        passwordConfirm: passwordConfirm
+    }));
+   
+    
 };
 function GetCurrentUser() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "/api/Account/isAuthenticated", true);
+    xmlhttp.onreadystatechange = function () {
+        var myObj = "";
+        myObj = xmlhttp.responseText != "" ? JSON.parse(xmlhttp.responseText) :
+            {};
+        document.getElementById("msgAuth").innerHTML = myObj.message;
+    }
+    xmlhttp.send();
+}
+function Exit() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", "api/Account/LogOff", true);
     xmlhttp.onreadystatechange = function () {
         var myObj = "";
         myObj = xmlhttp.responseText != "" ? JSON.parse(xmlhttp.responseText) :

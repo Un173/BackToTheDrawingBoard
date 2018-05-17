@@ -33,9 +33,9 @@
     <button id="registerBtn">Регистрация</button>
     <script>function ParseResponseMsg() {
             // Считывание данных с формы
-            email = document.getElementById("Email").value;
-            password = document.getElementById("Password").value;
-            passwordConfirm = document.getElementById("PasswordConfirm").value;
+    email = document.getElementById("RegEmail").value;
+    password = document.getElementById("RegPassword").value;
+    passwordConfirm = document.getElementById("RegPasswordConfirm").value;
 
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("POST", "/api/account/Register");
@@ -43,15 +43,15 @@
 
             xmlhttp.onreadystatechange = function () {
                 // Очистка контейнера вывода сообщений
-                document.getElementById("msg").innerHTML = ""
-                var mydiv = document.getElementById('formError');
+                document.getElementById("Regmsg").innerHTML = ""
+                var mydiv = document.getElementById('RegformError');
                 while (mydiv.firstChild) {
                     mydiv.removeChild(mydiv.firstChild);
                 }
 
                 // Обработка ответа от сервера
                 myObj = JSON.parse(this.responseText);
-                document.getElementById("msg").innerHTML = myObj.message;
+                document.getElementById("Regmsg").innerHTML = myObj.message;
                 // Вывод сообщений об ошибках
                 if (myObj.error.length > 0) {
                     for (var i = 0; i < myObj.error.length; i++) {
@@ -62,8 +62,8 @@
                     }
                 }
                 // Очистка полей поролей
-                document.getElementById("Password").value = "";
-                document.getElementById("PasswordConfirm").value = "";
+                document.getElementById("RegPassword").value = "";
+                document.getElementById("RegPasswordConfirm").value = "";
             };
             // Запрос на сервер
             xmlhttp.send(JSON.stringify({
