@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Регистрация нового пользователя</title>
+    <style>
+
+        .msgClass {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h2>Регистрация нового пользователя</h2>
+    <form>
+        <div class="msgClass">
+            <div id="msg"></div>
+            <ul id="formError"></ul>
+        </div>
+        <div>
+            <label for="">Email: </label><br />
+            <input type="text" id="Email" name="Email">
+        </div>
+        <div>
+            <label for="">Пароль: </label><br />
+            <input type="password" id="Password" name="Password">
+        </div>
+        <div>
+            <label for="">Подтверждение пароля: </label><br />
+            <input type="password" id="PasswordConfirm" name="PasswordConfirm">
+        </div>
+    </form>
+    <button id="registerBtn">Регистрация</button>
+    <script>function ParseResponseMsg() {
+            // Считывание данных с формы
+            email = document.getElementById("Email").value;
+            password = document.getElementById("Password").value;
+            passwordConfirm = document.getElementById("PasswordConfirm").value;
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "/api/account/Register");
+            xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            xmlhttp.onreadystatechange = function () {
+                // Очистка контейнера вывода сообщений
+                document.getElementById("msg").innerHTML = ""
+                var mydiv = document.getElementById('formError');
+                while (mydiv.firstChild) {
+                    mydiv.removeChild(mydiv.firstChild);
+                }
+
+                // Обработка ответа от сервера
+                myObj = JSON.parse(this.responseText);
+                document.getElementById("msg").innerHTML = myObj.message;
+                // Вывод сообщений об ошибках
+                if (myObj.error.length > 0) {
+                    for (var i = 0; i < myObj.error.length; i++) {
+                        var ul = document.getElementsByTagName("ul");
+                        var li = document.createElement("li");
+                        li.appendChild(document.createTextNode(myObj.error[i]));
+                        ul[0].appendChild(li);
+                    }
+                }
+                // Очистка полей поролей
+                document.getElementById("Password").value = "";
+                document.getElementById("PasswordConfirm").value = "";
+            };
+            // Запрос на сервер
+            xmlhttp.send(JSON.stringify({
+                email: email,
+                password: password,
+                passwordConfirm: passwordConfirm
+            }));
+        };
+        // Обработка клика по кнопке
+        document.getElementById("registerBtn").addEventListener("click", ParseResponseMsg);</script>
+</body>
+</html>

@@ -1,22 +1,24 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BackToTheDrawingBoard.Models
 {
-    public partial class myDBContext : DbContext
+    public partial class MyDBContext : IdentityDbContext<User>
     {
         public virtual DbSet<Canvas> Canvas { get; set; }
         public virtual DbSet<CavasUser> CavasUser { get; set; }
         public virtual DbSet<LoginTable> LoginTable { get; set; }
         public virtual DbSet<UserTypeTable> UserTypeTable { get; set; }
 
-        public myDBContext(DbContextOptions<myDBContext> options)
+        public MyDBContext(DbContextOptions<MyDBContext> options)
    : base(options)
         { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Canvas>(entity =>
             {
                 entity.Property(e => e.Name)

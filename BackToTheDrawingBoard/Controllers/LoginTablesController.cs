@@ -13,9 +13,9 @@ namespace BackToTheDrawingBoard.Controllers
     [Route("api/LoginTables")]
     public class LoginTablesController : Controller
     {
-        private readonly myDBContext _context;
+        private readonly MyDBContext _context;
 
-        public LoginTablesController(myDBContext context)
+        public LoginTablesController(MyDBContext context)
         {
             _context = context;
         }

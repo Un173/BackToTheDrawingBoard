@@ -10,12 +10,37 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
-<body onload="LoadCanvases();">
+<body onload="LoadCanvases(); GetCurrentUser();">
+    <a href="register.html">Регистрация нового пользователя</a>
 
+    <h3>Вход для зарегистрированных пользователей</h3>
+    <div class="container">
+        <h3>Вход для зарегистрированных пользователей</h3>
+        <form>
+            <div class="msgClass">
+                <div id="msgAuth"></div>
+                <div id="msg"></div>
+                <ul id="formError"></ul>
+            </div>
+            <div>
+                <label for="">Email: </label><br />
+                <input type="text" id="Email" name="Email">
+            </div>
+            <div>
+                <label for="">Пароль: </label><br />
+                <input type="password" id="Password" name="Password">
+            </div>
+        </form>
+        <button id="loginBtn" onclick="ParseResponseMsg();">Войти</button>
+    </div>
+
+    <a href="api/Account/LogOff">Выход</a>
     <!-- Кнопка пуска модальное окно -->
+    <div id="CreateMsg"></div>
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" onclick="LoadUsers();">
         Создать новое полотно
     </button>
+
 
     <!-- Модальное окно -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -31,9 +56,7 @@
                     Введите название полотна:<br>
                     <input id="canvasName" type="text" name="Название полотна"><br>
                     Выберите пользователей, которым вы хотите разрешить рисовать:<br>
-                    <select id="loginspicker" class="selectpicker" multiple>
-                        
-                    </select>
+                    <select id="loginspicker" class="selectpicker" multiple></select>
 
                 </div>
                 <div class="modal-footer">
@@ -44,13 +67,12 @@
         </div>
     </div>
     <h1> Список всех полотн</h1>
-    <table id="canvasTable">
-      
-    </table>
+    <table id="canvasTable"></table>
 
 
 
     <script src="MainPageScripts.js"></script>
     <script>window.setInterval(LoadCanvases, 5000);</script>
+
 </body>
-</html>
+</html >

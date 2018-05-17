@@ -11,8 +11,6 @@
     var x = "";
     document.getElementById("user").innerHTML = x;
     for (i in logins) { x += "<tr><td class=\"col-md-2\">" + logins[i].login + "<\/td>" + "<td class=\"col-md-2\">" + Match(logins[i], userTypes) + "<\/td>" + "<td class=\"col-md-2\">" + "<a href=\"\/edit.html?id=" + logins[i].id + "\">Изменить<\/a>" + "<\/td><td> <button onclick=\"Delete("+logins[i].id+");\">Удалить<\/button><\/td><\/tr>";}
-    
-
 
     document.getElementById("user").innerHTML += x;
     

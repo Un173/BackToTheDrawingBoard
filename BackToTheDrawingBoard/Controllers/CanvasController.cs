@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BackToTheDrawingBoard.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BackToTheDrawingBoard.Controllers
 {
@@ -13,9 +14,9 @@ namespace BackToTheDrawingBoard.Controllers
     [Route("api/Canvas")]
     public class CanvasController : Controller
     {
-        private readonly myDBContext _context;
+        private readonly MyDBContext _context;
 
-        public CanvasController(myDBContext context)
+        public CanvasController(MyDBContext context)
         {
             _context = context;
         }
@@ -82,6 +83,7 @@ namespace BackToTheDrawingBoard.Controllers
         }
 
         // POST: api/Canvas
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> PostCanvas([FromBody] Canvas canvas)
         {
