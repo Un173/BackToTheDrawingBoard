@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Главная страница</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/Styles.css">
+</head>
+<body onload="LoadCanvas();">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div id="toolsColumn" class="col-sm-3">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-primary" id="pen" onclick="ToolHandler(id);">
+                        <input type="radio" name="options">Pen
+                    </label>
+                    <label class="btn btn-primary" id="line" onclick="ToolHandler(id);">
+                        <input type="radio" name="options">Line
+                    </label>
+                    <label class="btn btn-primary" id="circle" onclick="ToolHandler(id);">
+                        <input type="radio" name="options">Circle
+                    </label>
+                    <label class="btn btn-primary" id="rectangle" onclick="ToolHandler(id);">
+                        <input type="radio" name="options">Rectangle
+                    </label>
+                </div>
+                <div class="slidecontainer" style="width: auto; height: 30px;">
+                    <input type="range" min="1" max="75" value="3" class="slider" id="myRange" onchange="FatnessChanged(this.value)">
+                </div>
+                <div id="color-picker-container"></div>
+            </div>
+            <div class="col-sm-8">
+                <div class="canvasContainer">
+                    <canvas id="canvas" width="640" height="640" onmousedown="GetStartingMousePosition(event);" onmouseup="GetEndingMousePosition(event);" onmousemove="MouseMoveHandler(event)"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="CanvasPageScritps.js"></script>
+    <script src="iro.min.js"></script>
+    <script>window.setInterval(SaveCanvas, 1000);</script>
+</body>
+</html>
