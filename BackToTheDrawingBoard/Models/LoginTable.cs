@@ -7,7 +7,7 @@ namespace BackToTheDrawingBoard.Models
     {
         public LoginTable()
         {
-            CavasUser = new HashSet<CavasUser>();
+           // CavasUser = new HashSet<CavasUser>();
         }
 
         public int Id { get; set; }
@@ -15,6 +15,6 @@ namespace BackToTheDrawingBoard.Models
         public int UserType { get; set; }
 
         public UserTypeTable UserTypeNavigation { get; set; }
-        public ICollection<CavasUser> CavasUser { get; set; }
+        //public ICollection<CavasUser> CavasUser { get; set; }
     }
 }

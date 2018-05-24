@@ -1,4 +1,5 @@
 ﻿function LoadCanvases() {
+
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onload = function (ev) {
         var msg = ""
@@ -13,40 +14,22 @@
             msg = "У Вас недостаточно прав для просмотра списка полотен, войдите или зарегистрируйтесь.";
             document.getElementById("canvasTable").innerHTML = msg;
         }
-       
+
     }
     var canvases;
-  //  var request = new XMLHttpRequest();
+    //  var request = new XMLHttpRequest();
     xmlhttp.open("GET", "api/Canvas/", false);
     xmlhttp.send();
-    
-   
-    
 }
-function Match(user, types)
-{
+function Match(user, types) {
     for (var i in types) if (user.userType == types[i].id) return types[i].name;
 }
-function LoadUsers() {
-        var logins
-        var request = new XMLHttpRequest();
-        request.open("GET", "api/LoginTables/", false);
-        request.send();
-        logins = JSON.parse(request.responseText);
-        var x = "";
-    document.getElementById("loginspicker").innerHTML = x;
-        for (it in logins) { x += "<option>"+logins[it].login + "<\/option>";}
-
-    document.getElementById("loginspicker").innerHTML += x;
-
-}
-function CreatePage()
-{
+function CreatePage() {
     var params = getQueryVariable("id");
     var userTypes;
 
     var request = new XMLHttpRequest();
-   
+
     request.open("GET", "api/UserTypeTables/", false);
     request.send();
     userTypes = JSON.parse(request.responseText);
@@ -54,7 +37,7 @@ function CreatePage()
 
     var x = "";
     for (var i in userTypes)
-      x += "<option>" + userTypes[i].name + "</option>";
+        x += "<option>" + userTypes[i].name + "</option>";
     document.getElementById("type").innerHTML = x;
 }
 function Put() {
@@ -69,7 +52,7 @@ function Put() {
     var e = document.getElementById("type");
     var type = GetId(e.options[e.selectedIndex].text, userTypes);
 
- 
+
     request.open("PUT", "api/LoginTables/" + params, false);
     request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     request.send(JSON.stringify({ id: params, login: login, userType: type }));
@@ -90,22 +73,23 @@ function Post() {
 
     request.open("POST", "api/LoginTables/", false);
     request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    request.send(JSON.stringify({login: login, userType: type }));
+    request.send(JSON.stringify({ login: login, userType: type }));
     window.location.replace("index.html");
 }
-function Delete(id)
-{
+function Delete(id) {
     //var params = getQueryVariable("id");
- 
+
     var request = new XMLHttpRequest();
     request.open("DELETE", "api/LoginTables/" + id, false);
     request.send();
-   // window.location.replace("index.html");
+    // window.location.replace("index.html");
 }
 function GetId(type, types) {
     for (var i in types) if (type == types[i].name) return types[i].id;
 }
 function PostCanvas() {// Нужно узнать id создаваемого элемента
+
+    var currentUser = GetCurrentUserForPost();
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onload = function (ev) {
         var msg = ""
@@ -117,11 +101,32 @@ function PostCanvas() {// Нужно узнать id создаваемого э
         document.getElementById("CreateMsg").innerHTML = msg;
     }
     var cName = document.getElementById("canvasName").value;
-   // var request = new XMLHttpRequest();
+    // var request = new XMLHttpRequest();
     xmlhttp.open("POST", "api/Canvas/", false);
     xmlhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    xmlhttp.send(JSON.stringify({ name: cName}));
-   LoadCanvases();
+    xmlhttp.send(JSON.stringify({ name: cName, creatorid: currentUser.id }));
+
+
+    LoadCanvases();
+}
+function GetCurrentUserForPost()
+{
+    var currentUser = '';
+    var request = new XMLHttpRequest();
+    request.open("GET", "api/Account/GetCurrent", false);
+    request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+    request.onload = function () {
+        if (request.readyState === request.DONE) {
+            if (request.status === 200) {
+                currentUser = JSON.parse(request.responseText);
+            }
+           
+        }
+     
+    };
+    request.send();
+    return currentUser;
 }
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
@@ -140,33 +145,31 @@ function ParseResponseMsg() {
     xmlhttp.open("POST", "/api/Account/Login");
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-xmlhttp.onreadystatechange = function () {
-            // Очистка контейнера вывода сообщений
-            document.getElementById("msg").innerHTML = ""
-            var mydiv = document.getElementById('formError');
-            while (mydiv.firstChild) {
-                mydiv.removeChild(mydiv.firstChild);
+    xmlhttp.onreadystatechange = function () {
+        // Очистка контейнера вывода сообщений
+        document.getElementById("msg").innerHTML = ""
+        var mydiv = document.getElementById('formError');
+        while (mydiv.firstChild) {
+            mydiv.removeChild(mydiv.firstChild);
+        }
+        // Обработка ответа от сервера
+        myObj = JSON.parse(this.responseText);
+        document.getElementById("msg").innerHTML = myObj.message;
+        // Вывод сообщений об ошибках
+        if (typeof myObj.error !== "undefined" && myObj.error.length > 0) {
+            for (var i = 0; i < myObj.error.length; i++) {
+                var ul = document.getElementsByTagName("ul");
+                var li = document.createElement("li");
+                li.appendChild(document.createTextNode(myObj.error[i]));
+                ul[0].appendChild(li);
             }
-            // Обработка ответа от сервера
-            myObj = JSON.parse(this.responseText);
-            document.getElementById("msg").innerHTML = myObj.message;
-            // Вывод сообщений об ошибках
-            if (typeof myObj.error !== "undefined" && myObj.error.length > 0) {
-                for (var i = 0; i < myObj.error.length; i++) {
-                    var ul = document.getElementsByTagName("ul");
-                    var li = document.createElement("li");
-                    li.appendChild(document.createTextNode(myObj.error[i]));
-                    ul[0].appendChild(li);
-
-                }
-            }
-            else
-            {
-                $('#myLoginModal').modal('hide');
-                GetCurrentUser();
-            }
-            document.getElementById("Password").value = "";
-        };
+        }
+        else {
+            $('#myLoginModal').modal('hide');
+            GetCurrentUser();
+        }
+        document.getElementById("Password").value = "";
+    };
     // Запрос на сервер
     xmlhttp.send(JSON.stringify({
         email: email,
@@ -213,8 +216,8 @@ function ParseRegisterResponseMsg() {
         password: password,
         passwordConfirm: passwordConfirm
     }));
-   
-    
+
+
 };
 function GetCurrentUser() {
     var xmlhttp = new XMLHttpRequest();

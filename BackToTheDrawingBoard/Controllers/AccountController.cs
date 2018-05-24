@@ -127,13 +127,31 @@ namespace BackToTheDrawingBoard.Controllers
         {
             User usr = await GetCurrentUserAsync();
             var message = usr == null ? "Вы Гость. Пожалуйста, выполните вход." : "Вы вошли как: " + usr.UserName;
-var msg = new
-{
-message
-};
+            var msg = new
+            {
+            message
+            };
             return Ok(msg);
         }
         private Task<User> GetCurrentUserAsync() =>
         _userManager.GetUserAsync(HttpContext.User);
+        [HttpGet]
+        [Route("api/Account/GetCurrent")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+          
+
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+
+                if (user == null)
+                    {
+                        return NotFound();
+                    }
+
+                return Ok(user);
+            
+
+
+        }
     }
 }

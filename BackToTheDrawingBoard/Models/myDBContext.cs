@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using BackToTheDrawingBoard.Models;
 
 namespace BackToTheDrawingBoard.Models
 {
     public partial class MyDBContext : IdentityDbContext<User>
     {
         public virtual DbSet<Canvas> Canvas { get; set; }
-        public virtual DbSet<CavasUser> CavasUser { get; set; }
+       public virtual DbSet<CanvasUser> CanvasUser { get; set; }
         public virtual DbSet<LoginTable> LoginTable { get; set; }
         public virtual DbSet<UserTypeTable> UserTypeTable { get; set; }
 
@@ -28,25 +29,17 @@ namespace BackToTheDrawingBoard.Models
                 entity.Property(e => e.String).IsUnicode(false);
             });
 
-            modelBuilder.Entity<CavasUser>(entity =>
+            modelBuilder.Entity<CanvasUser>(entity =>
             {
-                entity.ToTable("Cavas-User");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.ToTable("Canvas-User");
 
                 entity.Property(e => e.CanvasId).HasColumnName("canvasId");
 
-                entity.Property(e => e.UserId).HasColumnName("userId");
-
-                entity.HasOne(d => d.Canvas)
-                    .WithMany(p => p.CavasUser)
-                    .HasForeignKey(d => d.CanvasId)
-                    .HasConstraintName("FK__Table__canvasId__5DCAEF64");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.CavasUser)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Table__userId__5CD6CB2B");
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("userId")
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<LoginTable>(entity =>
@@ -73,5 +66,7 @@ namespace BackToTheDrawingBoard.Models
                     .HasMaxLength(10);
             });
         }
+
+        public DbSet<BackToTheDrawingBoard.Models.User> User { get; set; }
     }
 }

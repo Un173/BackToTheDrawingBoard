@@ -21,7 +21,7 @@
                 <li><a href="#">Page 2</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href=""data-toggle="modal" data-target="#myRegisterModal"><span class="glyphicon glyphicon-user"></span>Зарегистрироваться</a></li>
+                <li><a href="" data-toggle="modal" data-target="#myRegisterModal"><span class="glyphicon glyphicon-user"></span>Зарегистрироваться</a></li>
                 <li><a href data-toggle="modal" data-target="#myLoginModal"><span class="glyphicon glyphicon-log-in"></span>Войти</a></li>
                 <li><a href="#" onclick="Exit();"><span class="glyphicon glyphicon-remove"></span>Выйти</a></li>
             </ul>
@@ -29,7 +29,7 @@
     </nav>
     <div id="msgAuth"></div>
 
-  
+
     <div class="modal fade" id="myRegisterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -100,11 +100,8 @@
             </div>
         </div>
     </div>
-  
- 
-    
     <div id="CreateMsg"></div>
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" onclick="LoadUsers();">
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
         Создать новое полотно
     </button>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -140,9 +137,9 @@
 
     <script src="MainPageScripts.js"></script>
     <script>
-window.setInterval(LoadCanvases, 5000);// Времено отключаю
-window.setInterval(GetCurrentUser, 5000);
+       // window.setInterval(LoadCanvases, 5000);// Времено отключаю
+        window.setInterval(GetCurrentUser, 5000);
     </script>
 
 </body>
-</html >
+</html>

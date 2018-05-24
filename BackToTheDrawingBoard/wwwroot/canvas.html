@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Главная страница</title>
+    <title>Полотно</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -9,11 +9,100 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/Styles.css">
 </head>
-<body onload="LoadCanvas();">
+<body onload="LoadCanvas(); LoadUsers();">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">BackToTheDrawingBoard</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="#">Page 1</a></li>
+                <li><a href="#">Page 2</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="" data-toggle="modal" data-target="#myRegisterModal"><span class="glyphicon glyphicon-user"></span>Зарегистрироваться</a></li>
+                <li><a href data-toggle="modal" data-target="#myLoginModal"><span class="glyphicon glyphicon-log-in"></span>Войти</a></li>
+                <li><a href="#" onclick="Exit();"><span class="glyphicon glyphicon-remove"></span>Выйти</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="modal fade" id="myRegisterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel1">Регистрация нового пользователя</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="RegmsgClass">
+                            <div id="Regmsg"></div>
+                            <ul id="RegformError"></ul>
+                        </div>
+                        <div>
+                            <label for="">Email: </label><br />
+                            <input type="text" class="form-control" id="RegEmail" name="Email">
+                        </div>
+                        <div>
+                            <label for="">Пароль: </label><br />
+                            <input type="password" class="form-control" id="RegPassword" name="Password">
+                        </div>
+                        <div>
+                            <label for="">Подтверждение пароля: </label><br />
+                            <input type="password" class="form-control" id="RegPasswordConfirm" name="PasswordConfirm">
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="ParseRegisterResponseMsg();">Зарегистрироваться</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myLoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel1">Вход в учетную запись</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="msgClass">
+                            <div id="msg"></div>
+                            <ul id="formError"></ul>
+                        </div>
+                        <div>
+                            <label for="">Логин: </label><br />
+                            <input type="text" class="form-control" id="Email" name="Email">
+                        </div>
+                        <div>
+                            <label for="">Пароль: </label><br />
+                            <input type="password" class="form-control" id="Password" name="Password">
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="ParseResponseMsg();">Войти</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="msgAuth"></div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-1"></div>
-            <div id="toolsColumn" class="col-sm-3">
+            <div class="col-sm-2"></div>
+            <div id="toolsColumn" class="col-sm-2">
+                <h2>Инструменты</h2>
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-primary" id="pen" onclick="ToolHandler(id);">
                         <input type="radio" name="options">Pen
@@ -28,20 +117,29 @@
                         <input type="radio" name="options">Rectangle
                     </label>
                 </div>
+                <h2>Жирность</h2>
                 <div class="slidecontainer" style="width: auto; height: 30px;">
                     <input type="range" min="1" max="75" value="3" class="slider" id="myRange" onchange="FatnessChanged(this.value)">
                 </div>
+                <h2>Цвет</h2>
                 <div id="color-picker-container"></div>
             </div>
-            <div class="col-sm-8">
-                <div class="canvasContainer">
-                    <canvas id="canvas" width="640" height="640" onmousedown="GetStartingMousePosition(event);" onmouseup="GetEndingMousePosition(event);" onmousemove="MouseMoveHandler(event)"></canvas>
-                </div>
+            <div class="canvasContainer" width="640">
+                <canvas id="canvas" width="640" height="640" onmousedown="GetStartingMousePosition(event);" onmouseup="GetEndingMousePosition(event);" onmousemove="MouseMoveHandler(event)"></canvas>
             </div>
+            <div class="col-sm-2">
+                Выберите пользователей, которым вы хотите разрешить рисовать:<br>
+                <select id="loginspicker" class="selectpicker" multiple></select>
+            </div>
+            <div class="col-sm-2"></div>
         </div>
     </div>
+    <button onclick="SaveCanvas();">asdas</button>
     <script src="CanvasPageScritps.js"></script>
     <script src="iro.min.js"></script>
-    <script>window.setInterval(SaveCanvas, 1000);</script>
+    <script>
+      //  window.setInterval(SaveCanvas, 1000);//Временно отключаю
+
+    </script>
 </body>
 </html>
