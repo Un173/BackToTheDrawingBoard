@@ -286,15 +286,40 @@ function ParseRegisterResponseMsg() {
 
 };
 function LoadUsers() {
-    var logins
+   
     var request = new XMLHttpRequest();
     request.open("GET", "api/Users/", false);
     request.send();
-    logins = JSON.parse(request.responseText);
+    var logins = JSON.parse(request.responseText);
+    var params = getQueryVariable("id");
+    var request = new XMLHttpRequest();
+    request.open("GET", "api/CanvasUsers/"+params, false);
+    request.send();
+    var allowedUsers = JSON.parse(request.responseText);
+
     var x = "";
-    document.getElementById("loginspicker").innerHTML = x;
-    for (it in logins) { x += "<option>" + logins[it].email + "<\/option>"; }
+    document.getElementById("addUsersPicker").innerHTML = x;
+    for (it in logins)
+    {
+        x += "<option value=\"" + logins[it].id + "\">" + logins[it].email + "<\/option>";
+    }
 
-    document.getElementById("loginspicker").innerHTML += x;
+    document.getElementById("addUsersPicker").innerHTML += x;
 
+}
+function AllowUsers() {
+    var e = document.getElementById("addUsersPicker");
+    var selected = document.querySelectorAll('#addUsersPicker option:checked');
+    var values = Array.from(selected).map((el) => el.value);
+    for (it in values) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST", "/api/CanvasUsers");
+        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        var params = getQueryVariable("id");
+        xmlhttp.send(JSON.stringify({
+            canvasid: params,
+            userid: values[it],
+        }));
+
+    }
 }

@@ -7,8 +7,13 @@
             // msg = "Полотно создано"; 
             canvases = JSON.parse(xmlhttp.responseText);
             document.getElementById("canvasTable").innerHTML = "";
-            var x = "<tr><th>Id<\/th><th>Название<\/th><th>Ссылка<\/th> <\/tr >";
-            for (i in canvases) { x += "<tr><td class=\"col-md-2\">" + canvases[i].id + "<\/td>" + "<td class=\"col-md-2\">" + canvases[i].name + "<\/td>" + "<td class=\"col-md-2\">" + "<a href=\"\/canvas.html?id=" + canvases[i].id + "\">Ссылка<\/a>" + "<\/td><\/tr>"; }
+            var x = "<tr><th>Id<\/th><th>Название<\/th><th>Создатель<\/th><th>Ссылка<\/th><th>Удалить<\/th> <\/tr >";
+            for (i in canvases)
+            {
+                var currentUser = GetCurrentUserForPost();
+                if (canvases[i].creatorId == currentUser.id)//Или разрешено
+                    x += "<tr><td class=\"col-md-2\">" + canvases[i].id + "<\/td>" + "<td class=\"col-md-2\">" + canvases[i].name + "<\/td>" + "<td class=\"col-md-2\">" + canvases[i].creatorId + "<\/td>" + "<td class=\"col-md-2\">" + "<a href=\"\/canvas.html?id=" + canvases[i].id + "\">Ссылка<\/a>" + "<\/td>" + "<td> <button onclick=\"Delete(" + canvases[i].id+");\">Удалить<\/button><\/td>"+"<\/tr>";
+            }
             document.getElementById("canvasTable").innerHTML += x;
         } else {
             msg = "У Вас недостаточно прав для просмотра списка полотен, войдите или зарегистрируйтесь.";
@@ -24,63 +29,12 @@
 function Match(user, types) {
     for (var i in types) if (user.userType == types[i].id) return types[i].name;
 }
-function CreatePage() {
-    var params = getQueryVariable("id");
-    var userTypes;
 
-    var request = new XMLHttpRequest();
-
-    request.open("GET", "api/UserTypeTables/", false);
-    request.send();
-    userTypes = JSON.parse(request.responseText);
-
-
-    var x = "";
-    for (var i in userTypes)
-        x += "<option>" + userTypes[i].name + "</option>";
-    document.getElementById("type").innerHTML = x;
-}
-function Put() {
-    var params = getQueryVariable("id");
-    var userTypes;
-
-    var request = new XMLHttpRequest();
-    request.open("GET", "api/UserTypeTables/", false);
-    request.send();
-    userTypes = JSON.parse(request.responseText);
-    var login = document.getElementById("login").value;
-    var e = document.getElementById("type");
-    var type = GetId(e.options[e.selectedIndex].text, userTypes);
-
-
-    request.open("PUT", "api/LoginTables/" + params, false);
-    request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    request.send(JSON.stringify({ id: params, login: login, userType: type }));
-    window.location.replace("index.html");
-}
-function Post() {
-    var params = getQueryVariable("id");
-    var userTypes;
-
-    var request = new XMLHttpRequest();
-    request.open("GET", "api/UserTypeTables/", false);
-    request.send();
-    userTypes = JSON.parse(request.responseText);
-    var login = document.getElementById("login").value;
-    var e = document.getElementById("type");
-    var type = GetId(e.options[e.selectedIndex].text, userTypes);
-
-
-    request.open("POST", "api/LoginTables/", false);
-    request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    request.send(JSON.stringify({ login: login, userType: type }));
-    window.location.replace("index.html");
-}
 function Delete(id) {
     //var params = getQueryVariable("id");
 
     var request = new XMLHttpRequest();
-    request.open("DELETE", "api/LoginTables/" + id, false);
+    request.open("DELETE", "api/Canvas/" + id, false);
     request.send();
     // window.location.replace("index.html");
 }

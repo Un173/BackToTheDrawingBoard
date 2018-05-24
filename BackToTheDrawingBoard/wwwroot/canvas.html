@@ -127,14 +127,19 @@
             <div class="canvasContainer" width="640">
                 <canvas id="canvas" width="640" height="640" onmousedown="GetStartingMousePosition(event);" onmouseup="GetEndingMousePosition(event);" onmousemove="MouseMoveHandler(event)"></canvas>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-1">
                 Выберите пользователей, которым вы хотите разрешить рисовать:<br>
-                <select id="loginspicker" class="selectpicker" multiple></select>
+                <select id="addUsersPicker" class="selectpicker" multiple></select>
+                <button onclick="AllowUsers();">Разрешить доступ</button>
+
+                Выберите пользователей, которым вы хотите запретить рисовать:<br>
+                <select id="deleteUsersPicker" class="selectpicker" multiple></select>
+                <button onclick="">Запретить доступ</button>
             </div>
             <div class="col-sm-2"></div>
         </div>
     </div>
-    <button onclick="SaveCanvas();">asdas</button>
+    <button onclick="SaveCanvas();">SaveCanvas</button>
     <script src="CanvasPageScritps.js"></script>
     <script src="iro.min.js"></script>
     <script>
