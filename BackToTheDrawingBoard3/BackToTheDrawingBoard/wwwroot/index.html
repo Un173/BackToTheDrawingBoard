@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Главная страница</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/Styles.css">
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body onload="LoadCanvases(); GetCurrentUser();">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">BackToTheDrawingBoard</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="#">Page 1</a></li>
+                <li><a href="#">Page 2</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="" data-toggle="modal" data-target="#myRegisterModal"><span class="glyphicon glyphicon-user"></span>Зарегистрироваться</a></li>
+                <li><a href data-toggle="modal" data-target="#myLoginModal"><span class="glyphicon glyphicon-log-in"></span>Войти</a></li>
+                <li><a href="#" onclick="Exit();"><span class="glyphicon glyphicon-remove"></span>Выйти</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="msgAuth"></div>
+
+
+    <div class="modal fade" id="myRegisterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel1">Регистрация нового пользователя</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="RegmsgClass">
+                            <div id="Regmsg"></div>
+                            <ul id="RegformError"></ul>
+                        </div>
+                        <div>
+                            <label for="">Email: </label><br />
+                            <input type="text" class="form-control" id="RegEmail" name="Email">
+                        </div>
+                        <div>
+                            <label for="">Пароль: </label><br />
+                            <input type="password" class="form-control" id="RegPassword" name="Password">
+                        </div>
+                        <div>
+                            <label for="">Подтверждение пароля: </label><br />
+                            <input type="password" class="form-control" id="RegPasswordConfirm" name="PasswordConfirm">
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="ParseRegisterResponseMsg();">Зарегистрироваться</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myLoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel1">Вход в учетную запись</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="msgClass">
+                            <div id="msg"></div>
+                            <ul id="formError"></ul>
+                        </div>
+                        <div>
+                            <label for="">Логин: </label><br />
+                            <input type="text" class="form-control" id="Email" name="Email">
+                        </div>
+                        <div>
+                            <label for="">Пароль: </label><br />
+                            <input type="password" class="form-control" id="Password" name="Password">
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="ParseResponseMsg();">Войти</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="CreateMsg"></div>
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+        Создать новое полотно
+    </button>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Добавление нового полотна</h4>
+                </div>
+                <div class="modal-body">
+                    Введите название полотна:<br>
+                    <input id="canvasName" type="text" name="Название полотна"><br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="PostCanvas();" data-dismiss="modal">Создать</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <h1> Список всех полотен</h1>
+    <table id="canvasTable"></table>
+
+
+
+    <script src="MainPageScripts.js"></script>
+    <script>
+       // window.setInterval(LoadCanvases, 5000);// Времено отключаю
+        window.setInterval(GetCurrentUser, 5000);
+    </script>
+
+</body>
+</html>
