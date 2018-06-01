@@ -92,3 +92,26 @@ label {
     .custom-checkbox input[type="checkbox"]:checked ~ .glyphicon-star {
         opacity: 1;
     }
+/*Для контейнеров*/
+div 
+{
+    word-wrap:break-word;
+}
+div > p
+{
+  align-self:center;
+}
+.buttonDiv {
+        position: absolute;
+        bottom: 20px;
+
+}
+canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+    

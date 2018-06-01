@@ -12,7 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
-<body onload="LoadCanvases();GetCurrentUser();">
+<body onload="LoadCanvases(); GetCurrentUser();">
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -126,7 +126,7 @@
 
 
 
-
+   
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2"></div>
@@ -137,20 +137,20 @@
                     Создать новое полотно
                 </button>
                 <h1> Список всех полотен</h1>
-                <div id="canvasesCol" class="row">
-                    </div>
-                </div>
-                <div class="col-sm-2"></div>
+                <table id="canvasTable" class="table table-striped"></table>
             </div>
+            <div class="col-sm-2"></div>
         </div>
- 
+    </div>
 
 
-    <script src="MainPageScripts.js"></script>
-    <script>
-        // window.setInterval(LoadCanvases, 5000);// Времено отключаю
-        window.setInterval(GetCurrentUser, 5000);
-    </script>
+
+
+        <script src="MainPageScripts.js"></script>
+        <script>
+            // window.setInterval(LoadCanvases, 5000);// Времено отключаю
+            window.setInterval(GetCurrentUser, 5000);
+        </script>
 
 </body>
 </html>

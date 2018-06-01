@@ -1,15 +1,33 @@
 ﻿function LoadCanvases() {
     var currentUser = GetCurrentUserForPost();
+   /* var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onload = function (ev)
+    {
+        var sasa = JSON.parse(xmlhttp.responseText);
+    }
+    xmlhttp.open("GET", "api/CanvasUsers/user/" + currentUser.id, false);
+    xmlhttp.send();*/
+    /*var currentUser = GetCurrentUserForPost();
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", "api/CanvasUsers/" + currentUser.id, false);
+    xmlhttp.send();
+    canvases = JSON.parse(xmlhttp.responseText);*/
+
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onload = function (ev) {
         var msg = ""
         if (xmlhttp.status == 200)
         {
+            // msg = "Полотно создано"; 
             canvases = JSON.parse(xmlhttp.responseText);
-           // document.getElementById("canvasTable").innerHTML = "";
-            var x="";//= "<tr><th>Id<\/th><th>Название<\/th><th>Создатель<\/th><th>Ссылка<\/th><th>Лайк?<\/th><th>Удалить<\/th> <\/tr >";
+            document.getElementById("canvasTable").innerHTML = "";
+            var x = "<tr><th>Id<\/th><th>Название<\/th><th>Создатель<\/th><th>Ссылка<\/th><th>Лайк?<\/th><th>Удалить<\/th> <\/tr >";
+          
+            /*var request = new XMLHttpRequest();
+            request.open("GET", "api/CanvasUsers/user/" + currentUser.id, false);
+            request.send();
+            var users = JSON.parse(request.responseText);*/
 
-   
             var request = new XMLHttpRequest();
             request.open("GET", "api/FavoriteCanvases/" + currentUser.id, false);
             request.send();
@@ -17,24 +35,21 @@
           
             for (i in canvases)
             {
+              /*  if (canvases[i].creatorId == currentUser.id || CheckUserAllowance(users, canvases[i]))
+                {*/
                     var star;
                     if (CheckFavedCanvases(canvases[i],favedCanvases) == false)
                     star = "<label for=\"faveButton" + canvases[i].id + "\" class=\"custom-checkbox\"><input type=\"checkbox\" id=\"faveButton" + canvases[i].id + "\"" + "onclick=\"FaveClickHandler(" + canvases[i].id+")\""+"\/><i class=\"glyphicon glyphicon-star-empty\"><\/i> <i class=\"glyphicon glyphicon-star\"><\/i><\/label>";
                     else 
-                    star = "<label for=\"faveButton" + canvases[i].id + "\" class=\"custom-checkbox\"><input type=\"checkbox\" id=\"faveButton" + canvases[i].id + "\"" + "checked=\"checked\"" + "onclick=\"FaveClickHandler(" + canvases[i].id + ")\"" + "\/><i class=\"glyphicon glyphicon-star-empty\"><\/i> <i class=\"glyphicon glyphicon-star\"><\/i><\/label>";                                                                                                                                             
-                x += "<div class=\"col-sm-4 col-md-4\" style=\"min-width:255px\">\n<div class=\"thumbnail\" style=\"height:400px; width: 250px;\">\n<canvas id=\"image" + canvases[i].id +"\" style=\"height: 200px; width: 200px;\"><\/canvas><div class=\"caption\"style=\"width: inherit;\">\n<h3>" + canvases[i].name + "<\/h3>\n<p>\u0421\u043e\u0437\u0434\u0430\u0442\u0435\u043b\u044c \u043f\u043e\u043b\u043e\u0442\u043d\u0430:" + GetUserEmail(canvases[i].creatorId) + "<\/p><div class=\"buttonDiv\"><p><a href=\"\/canvas.html?id=" + canvases[i].id + "\" class=\"btn btn-primary\" role=\"button\">Рисовать!<\/a>&nbsp<a href=\"\#\"class=\"btn btn-primary\" role=\"button\" onclick=\"Delete(" + canvases[i].id + ");\">Удалить<\/a>&nbsp" + star + "<\/p><\/div><\/div>\n<\/div>\n<\/div>\n<\/div>";
-              
+                    star = "<label for=\"faveButton" + canvases[i].id + "\" class=\"custom-checkbox\"><input type=\"checkbox\" id=\"faveButton" + canvases[i].id + "\"" +  "checked=\"checked\""+ "onclick=\"FaveClickHandler(" + canvases[i].id + ")\"" + "\/><i class=\"glyphicon glyphicon-star-empty\"><\/i> <i class=\"glyphicon glyphicon-star\"><\/i><\/label>";
+                x += "<tr><td class=\"col-md-2\">" + canvases[i].id + "<\/td>" + "<td class=\"col-md-2\">" + canvases[i].name + "<\/td>" + "<td class=\"col-md-2\">" + GetUserEmail(canvases[i].creatorId) + "<\/td>" + "<td class=\"col-md-2\">" + "<a href=\"\/canvas.html?id=" + canvases[i].id + "\">Ссылка<\/a>" + "<\/td>" + "<td>" + star + "<\/td>";
                 if (canvases[i].creatorId == currentUser.id) {
-                   // x +="<td><button onclick=\"Delete(" + canvases[i].id + ");\">Удалить<\/button><\/td>" + "<\/tr>";
+                    x +="<td><button onclick=\"Delete(" + canvases[i].id + ");\">Удалить<\/button><\/td>" + "<\/tr>";
                 }
-              //  else x += "<td><\/td><\/tr>";
+                else x += "<td><\/td><\/tr>";
+                //}
             }
-            if (typeof x !== "undefined") {
-                document.getElementById("canvasesCol").innerHTML += x;
-                for (i in canvases)
-                if (canvases[i].id != null)
-                    GetCanvas(canvases[i].id);
-            }
+            document.getElementById("canvasTable").innerHTML += x;
         } else
         {
             msg = "У Вас недостаточно прав для просмотра списка полотен, войдите или зарегистрируйтесь.";
@@ -45,22 +60,6 @@
     //  var request = new XMLHttpRequest();
     xmlhttp.open("GET", "api/CanvasUsers/" + currentUser.id, false);
     xmlhttp.send();
-}
-function GetCanvas(id) {
-    var request = new XMLHttpRequest();
-    request.open("GET", "api/Canvas/" + id, false);
-    request.send();
-    c = JSON.parse(request.responseText);
-    if (c.string != null) {
-
-        var canvas = document.getElementById("image" + id);
-        var context = canvas.getContext('2d');
-        var imageObj = new Image();
-        imageObj.onload = function () {
-            context.drawImage(this, 0, 0, imageObj.width, imageObj.height, 0, 0, canvas.width, canvas.height);
-        };
-        imageObj.src = c.string;
-    }
 }
 function GetUserEmail(id) 
 {

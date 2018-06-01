@@ -70,6 +70,35 @@ namespace BackToTheDrawingBoard.Controllers
             return Ok(canvasUser);
         }
 
+        [Route("api/CanvasUsers/{id}")]
+        //[HttpGet("{id}")]
+        public async Task<IActionResult> GetCanvasesFromUser([FromRoute] string id)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //var canvasUser = await _context.CanvasUser.SingleOrDefaultAsync(m => m.CanvasId == id);
+            var canvasesWithAllowance = _context.CanvasUser.Where(c => c.UserId == id).Select(c => new { c.CanvasId});
+            List<Canvas> canvasList = _context.Canvas.ToList();
+            List<Canvas> resultList = new List<Canvas>();
+            foreach (var a in canvasList)
+               foreach (var canvas in canvasesWithAllowance)// id всех полотен, к которым пользователь имеет отношение
+                {
+                    if (a.Id == canvas.CanvasId) resultList.Add(a);
+                };
+            foreach (var a in canvasList)
+                if (a.CreatorId == id) { resultList.Add(a);};
+
+            if (canvasesWithAllowance == null)
+            {
+                return NotFound();
+            }
+            return Ok(resultList);
+        }
+
         // PUT: api/CanvasUsers/5
 
         [HttpPut("{id}")]
