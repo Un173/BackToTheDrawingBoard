@@ -10,7 +10,7 @@ using BackToTheDrawingBoard.Models;
 namespace BackToTheDrawingBoard.Controllers
 {
     [Produces("application/json")]
-   // [Route("api/CanvasUsers")]
+    //[Route("api/CanvasUsers")]
     public class CanvasUsersController : Controller
     {
         private readonly MyDBContext _context;
@@ -136,7 +136,8 @@ namespace BackToTheDrawingBoard.Controllers
         }
 
         // POST: api/CanvasUsers
-        [HttpPost]
+        [Route("api/CanvasUsers/")]
+        //[HttpPost]
         public async Task<IActionResult> PostCanvasUser([FromBody] CanvasUser canvasUser)
         {
             if (!ModelState.IsValid)
@@ -151,24 +152,53 @@ namespace BackToTheDrawingBoard.Controllers
         }
 
         // DELETE: api/CanvasUsers/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCanvasUser([FromRoute] int id)
+        [Route("api/CanvasUsers/delete/")]
+        //[HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCanvasUser([FromBody] CanvasUser canvasUser)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var canvasUser = await _context.CanvasUser.SingleOrDefaultAsync(m => m.Id == id);
-            if (canvasUser == null)
+            var canvasUser1 = await _context.CanvasUser.SingleOrDefaultAsync(m => m.CanvasId == canvasUser.CanvasId&&m.UserId==canvasUser.UserId);
+            if (canvasUser1 == null)
             {
                 return NotFound();
             }
 
-            _context.CanvasUser.Remove(canvasUser);
+            _context.CanvasUser.Remove(canvasUser1);
             await _context.SaveChangesAsync();
 
             return Ok(canvasUser);
+        }
+
+        [Route("api/CanvasUsers/deleteCascade/{id}")]
+        //[HttpDelete]
+        public async Task<IActionResult> DeleteCanvasUserAfterDeletionOfCanvas([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //var canvas = _context.FavoriteCanvases.Where(c => c.UserId == favoriteCanvases.UserId && c.CanvasId == favoriteCanvases.CanvasId).Count();
+            var canvases = _context.CanvasUser.Where(c => c.CanvasId == id);
+
+
+            if (canvases == null)
+            {
+                return NotFound();
+            }
+            foreach (var v in canvases)
+            {
+                _context.CanvasUser.Remove(v);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(canvases);
+
+
         }
 
         private bool CanvasUserExists(int id)

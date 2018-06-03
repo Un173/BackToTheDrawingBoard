@@ -17,6 +17,7 @@ var creator;
 var c;
 function LoadCanvas() {
     // canvas = document.getElementById('canvas');
+    demoColorPicker = null;
     if (canvas && canvas.getContext) {
         params = getQueryVariable("id");
         GetCanvas(params);
@@ -303,6 +304,7 @@ function ParseRegisterResponseMsg() {
 
 };
 function LoadUsers() {
+    canvasRelatedUsers = [];
     var user = GetCurrent();
     if (user.id == c.creatorId) {
 
@@ -363,6 +365,7 @@ function AllowUsers() {
         }));
 
     }
+    LoadUsers();
 }
 function DeleteUsers() {
     var e = document.getElementById("deleteUsersPicker");
@@ -370,13 +373,16 @@ function DeleteUsers() {
     var values = Array.from(selected).map((el) => el.value);
     for (it in values)
     {
-        var id=FindId(values[it]);
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("DELETE", "/api/CanvasUsers/"+id);
+        xmlhttp.open("DELETE", "/api/CanvasUsers/delete/");
         xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xmlhttp.send();
+        xmlhttp.send(JSON.stringify({
+            canvasid: params,
+            userid: values[it],
+        }));
 
     }
+    LoadUsers();
 }
 function FindId(user)
 {

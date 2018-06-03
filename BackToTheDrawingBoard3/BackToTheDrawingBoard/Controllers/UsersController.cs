@@ -117,6 +117,7 @@ namespace BackToTheDrawingBoard.Controllers
             return Ok(user);
         }
 
+
         private bool UserExists(string id)
         {
             return _context.User.Any(e => e.Id == id);

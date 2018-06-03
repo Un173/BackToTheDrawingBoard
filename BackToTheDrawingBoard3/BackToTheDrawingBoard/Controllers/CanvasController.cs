@@ -22,7 +22,7 @@ namespace BackToTheDrawingBoard.Controllers
         }
 
         // GET: api/Canvas
-        [Authorize]
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public IEnumerable<Canvas> GetCanvas()
         {

@@ -23,15 +23,12 @@
                 <li><a href="#">Page 2</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="" data-toggle="modal" data-target="#myRegisterModal"><span class="glyphicon glyphicon-user"></span>Зарегистрироваться</a></li>
-                <li><a href data-toggle="modal" data-target="#myLoginModal"><span class="glyphicon glyphicon-log-in"></span>Войти</a></li>
-                <li><a href="#" onclick="Exit();"><span class="glyphicon glyphicon-remove"></span>Выйти</a></li>
+                <li id="regButton"><a href="" data-toggle="modal" data-target="#myRegisterModal"><span class="glyphicon glyphicon-user"></span>Зарегистрироваться</a></li>
+                <li id="loginButton"><a href data-toggle="modal" data-target="#myLoginModal"><span class="glyphicon glyphicon-log-in"></span>Войти</a></li>
+                <li id="exitButton"><a href="#" onclick="Exit();"><span class="glyphicon glyphicon-remove"></span>Выйти</a></li>
             </ul>
         </div>
     </nav>
-
-
-
     <div class="modal fade" id="myRegisterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -102,7 +99,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -123,32 +119,38 @@
             </div>
         </div>
     </div>
-
-
-
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2"></div>
-            <div class="col-sm-8">
-                <div id="msgAuth"></div>
+            <div class="col-sm-8">         
                 <div id="CreateMsg"></div>
-                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                    Создать новое полотно
-                </button>
-                <h1> Список всех полотен</h1>
-                <div id="canvasesCol" class="row">
-                    </div>
+                <div id="header">
+                    <br>
+                    <h1 class="logo">
+                        <span class="word1">Back</span>
+                        <span class="word2">ToTheDrawingBoard</span>
+
+                    </h1>
+
+                    <label id="msgAuth"></label>
+                    <br>
+                    <button type="button" id="createNewCanvasButton" data-toggle="modal" data-target="#myModal">
+                        Создать новое полотно
+                    </button>
                 </div>
-                <div class="col-sm-2"></div>
+
+             
+
+                <h1 id="canvasTable"> Список всех полотен:</h1>
+                <div id="canvasesCol" class="row">
+                </div>
             </div>
+            <div class="col-sm-2"></div>
         </div>
- 
-
-
+    </div>
     <script src="MainPageScripts.js"></script>
     <script>
-        // window.setInterval(LoadCanvases, 5000);// Времено отключаю
+         window.setInterval(LoadCanvases, 5000);// Времено отключаю
         window.setInterval(GetCurrentUser, 5000);
     </script>
 

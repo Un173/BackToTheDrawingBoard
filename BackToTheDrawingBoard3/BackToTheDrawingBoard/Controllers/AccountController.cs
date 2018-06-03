@@ -152,5 +152,22 @@ namespace BackToTheDrawingBoard.Controllers
 
 
         }
+
+        [HttpGet]
+        [Route("api/Account/GetUserRole")]
+        public async Task<IActionResult> GetUserRole([FromRoute] string id)
+        {
+
+
+            var user = await _userManager.GetRolesAsync(await _userManager.GetUserAsync(HttpContext.User));
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
     }
 }

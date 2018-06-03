@@ -98,53 +98,51 @@
     </div>
 
     <div id="msgAuth"></div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div id="toolsColumn" class="col-sm-2">
-                <h2>Инструменты</h2>
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary" id="pen" onclick="ToolHandler(id);">
-                        <input type="radio" name="options">Pen
-                    </label>
-                    <label class="btn btn-primary" id="line" onclick="ToolHandler(id);">
-                        <input type="radio" name="options">Line
-                    </label>
-                    <label class="btn btn-primary" id="circle" onclick="ToolHandler(id);">
-                        <input type="radio" name="options">Circle
-                    </label>
-                    <label class="btn btn-primary" id="rectangle" onclick="ToolHandler(id);">
-                        <input type="radio" name="options">Rectangle
-                    </label>
-                </div>
-                <h2>Жирность</h2>
-                <div class="slidecontainer" style="width: auto; height: 30px;">
-                    <input type="range" min="1" max="75" value="3" class="slider" id="myRange" onchange="FatnessChanged(this.value)">
-                </div>
-                <h2>Цвет</h2>
-                <div id="color-picker-container"></div>
+  
+    <div id="row"class="row">
+        <div id="toolsColumn" class="col-sm-2">
+            <h2>Инструменты</h2>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary" id="pen" onclick="ToolHandler(id);">
+                    <input type="radio" name="options">Pen
+                </label>
+                <label class="btn btn-primary" id="line" onclick="ToolHandler(id);">
+                    <input type="radio" name="options">Line
+                </label>
+                <label class="btn btn-primary" id="circle" onclick="ToolHandler(id);">
+                    <input type="radio" name="options">Circle
+                </label>
+                <label class="btn btn-primary" id="rectangle" onclick="ToolHandler(id);">
+                    <input type="radio" name="options">Rectangle
+                </label>
             </div>
-            <div class="canvasContainer" width="640">
-                <canvas id="canvas" width="640" height="640" onmousedown="GetStartingMousePosition(event);" onmouseup="GetEndingMousePosition(event);" onmousemove="MouseMoveHandler(event)"></canvas>
+            <h2>Жирность</h2>
+            <div class="slidecontainer" style="width: auto; height: 30px;">
+                <input type="range" min="1" max="75" value="3" class="slider" id="myRange" onchange="FatnessChanged(this.value)">
             </div>
-            <div class="col-sm-1">
-                <label id="addUsersLabel">Выберите пользователей, которым вы хотите разрешить рисовать:</label>
-                <select id="addUsersPicker" class="selectpicker" multiple></select>
-                <button id="addUsersButton" onclick="AllowUsers();">Разрешить доступ</button>
-
-                <label id="deleteUsersLabel">Выберите пользователей, которым вы хотите запретить рисовать:</label>
-                    <select id="deleteUsersPicker" class="selectpicker" multiple></select>
-                    <button id="deleteUsersButton" onclick="DeleteUsers();">Запретить доступ</button>
-</div>
-            <div class="col-sm-2"></div>
+            <h2>Цвет</h2>
+            <div id="color-picker-container"></div>
         </div>
-    </div>
-    <button onclick="SaveCanvas();">SaveCanvas</button>
-    <script src="CanvasPageScritps.js"></script>
-    <script src="iro.min.js"></script>
-    <script>
-      //  window.setInterval(SaveCanvas, 1000);//Временно отключаю
+        <div id="canvasContainer" class="col-sm-8" width="640">
+            <canvas id="canvas" width="640" height="640" onmousedown="GetStartingMousePosition(event);" onmouseup="GetEndingMousePosition(event); SaveCanvas();" onmousemove="MouseMoveHandler(event)"></canvas>
+        </div>
+        <div id="allowanceColumn" class="col-sm-2">
+            <h2 id="addUsersLabel">Выберите пользователей, которым вы хотите разрешить рисовать:</h2>
+            <select id="addUsersPicker" class="selectpicker" multiple></select>
+            <button id="addUsersButton" onclick="AllowUsers();">Разрешить доступ</button>
 
-    </script>
+            <h2 id="deleteUsersLabel">Выберите пользователей, которым вы хотите запретить рисовать:</h2>
+            <select id="deleteUsersPicker" class="selectpicker" multiple></select>
+            <button id="deleteUsersButton" onclick="DeleteUsers();">Запретить доступ</button>
+        </div>
+        </div>
+
+            <button onclick="SaveCanvas();">SaveCanvas</button>
+            <script src="CanvasPageScritps.js"></script>
+            <script src="iro.min.js"></script>
+            <script>
+              //  window.setInterval(SaveCanvas, 1000);
+                //window.setInterval(GetCanvas, 1000);
+            </script>
 </body>
 </html>

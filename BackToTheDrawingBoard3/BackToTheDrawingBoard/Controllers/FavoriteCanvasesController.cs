@@ -126,6 +126,33 @@ namespace BackToTheDrawingBoard.Controllers
             
            
         }
+        [Route("api/FavoriteCanvases/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFavoriteCanvasesAfterDeletionOfCanvas([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //var canvas = _context.FavoriteCanvases.Where(c => c.UserId == favoriteCanvases.UserId && c.CanvasId == favoriteCanvases.CanvasId).Count();
+            var canvases=_context.FavoriteCanvases.Where(c => c.CanvasId == id);
+            
+
+            if (canvases == null)
+            {
+                return NotFound();
+            }
+            foreach (var v in canvases)
+            {
+                _context.FavoriteCanvases.Remove(v);
+            }
+            
+            await _context.SaveChangesAsync();
+
+            return Ok(canvases);
+
+
+        }
 
         private bool FavoriteCanvasesExists(int id)
         {
