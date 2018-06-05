@@ -17,10 +17,18 @@ var creator;
 var c;
 function LoadCanvas() {
     // canvas = document.getElementById('canvas');
+    var request = new XMLHttpRequest();
+    request.open("GET", " api/Account/GetUserRole", false);
+    request.send();
+    if (request.status == 500) 
+    {
+        location.href = '403.html';
+        return;
+    }
     demoColorPicker = null;
     if (canvas && canvas.getContext) {
-        params = getQueryVariable("id");
-        GetCanvas(params);
+        
+        GetCanvas();
         var context = canvas.getContext('2d');
         demoColorPicker = new iro.ColorPicker("#color-picker-container", {
             width: document.getElementById("toolsColumn").offsetWidth,
@@ -141,7 +149,7 @@ function SaveCanvas()// Добавить имя
     var request = new XMLHttpRequest();
     request.open("PUT", "api/Canvas/" + params, false);
     request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    request.send(JSON.stringify({ id: params, name: canvasName, string: url, creatorid: creator }));
+    request.send(JSON.stringify({ id: params, string: url }));
 
 }
 function GetCurrent() {
@@ -162,17 +170,9 @@ function GetCurrent() {
     request.send();
     return currentUser;
 }
-//Для создания нового полотна
-/*function MakeCanvas() {
 
-    var canvas = document.getElementById('canvas');
-    var url = canvas.toDataURL();
-    var request = new XMLHttpRequest();
-    request.open("POST", "api/Canvas/", false);
-    request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    request.send(JSON.stringify({ string: url }));
-}*/
-function GetCanvas(id) {
+function GetCanvas() {
+   var id = getQueryVariable("id");
     var request = new XMLHttpRequest();
     request.open("GET", "api/Canvas/" + id, false);
     request.send();
@@ -187,6 +187,7 @@ function GetCanvas(id) {
     imageObj.src = c.string;
     canvasName = c.name;
     creator = c.creatorId;
+    document.title = canvasName;
 }
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
@@ -201,13 +202,13 @@ function Exit() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", "api/Account/LogOff", true);
     xmlhttp.onreadystatechange = function () {
-        var myObj = "";
-        myObj = xmlhttp.responseText != "" ? JSON.parse(xmlhttp.responseText) :
-            {};
-        document.getElementById("msgAuth").innerHTML = myObj.message;
+       
+        location.href = '403.html';
+        LoadCanvas();
     }
     xmlhttp.send();
-    LoadCanvas();
+    
+    
 }
 function ParseResponseMsg() {
     // Считывание данных с формы

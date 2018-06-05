@@ -5,9 +5,12 @@
     request.send();
     if (request.status == 500) {
         document.getElementById("exitButton").style.display = 'none';
+        document.getElementById("loginButton").style.display = 'block';
+        document.getElementById("regButton").style.display = 'block';
+        document.getElementById("createNewCanvasButton").style.display = 'none';
             msg = "У Вас недостаточно прав для просмотра списка полотен, войдите или зарегистрируйтесь.";
             document.getElementById("canvasTable").innerHTML = msg;
-        
+      
     }
     else 
     {
@@ -15,6 +18,8 @@
         document.getElementById("canvasTable").innerHTML = msg;
         document.getElementById("loginButton").style.display = 'none';
         document.getElementById("regButton").style.display = 'none';
+        document.getElementById("createNewCanvasButton").style.display = 'block';
+        document.getElementById("exitButton").style.display = 'block';
         var role = JSON.parse(request.responseText);
         if (role[0] == "user")
             LoadPageAsUser();
@@ -256,7 +261,7 @@ function ParseResponseMsg() {
         }
         // Обработка ответа от сервера
         myObj = JSON.parse(this.responseText);
-        document.getElementById("msg").innerHTML = myObj.message;
+        //document.getElementById("msg").innerHTML = myObj.message;
         // Вывод сообщений об ошибках
         if (typeof myObj.error !== "undefined" && myObj.error.length > 0) {
             for (var i = 0; i < myObj.error.length; i++) {
@@ -269,6 +274,7 @@ function ParseResponseMsg() {
         else {
             $('#myLoginModal').modal('hide');
             GetCurrentUser();
+            LoadCanvases();
         }
         document.getElementById("Password").value = "";
     };
@@ -277,6 +283,7 @@ function ParseResponseMsg() {
         email: email,
         password: password
     }));
+  
 }
 function ParseRegisterResponseMsg() {
     email = document.getElementById("RegEmail").value;
@@ -340,7 +347,9 @@ function Exit() {
         myObj = xmlhttp.responseText != "" ? JSON.parse(xmlhttp.responseText) :
             {};
         document.getElementById("msgAuth").innerHTML = myObj.message;
+        GetCurrentUser();
+        LoadCanvases();
     }
     xmlhttp.send();
-    LoadCanvases();
+   
 }

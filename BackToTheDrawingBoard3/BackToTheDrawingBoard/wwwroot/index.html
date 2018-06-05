@@ -2,7 +2,7 @@
 <html>
 <head>
 
-    <title>Главная страница</title>
+    <title>BackToTheDrawingBoard</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -18,10 +18,7 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="index.html">BackToTheDrawingBoard</a>
             </div>
-            <ul class="nav navbar-nav">
-                <li><a href="#">Page 1</a></li>
-                <li><a href="#">Page 2</a></li>
-            </ul>
+    
             <ul class="nav navbar-nav navbar-right">
                 <li id="regButton"><a href="" data-toggle="modal" data-target="#myRegisterModal"><span class="glyphicon glyphicon-user"></span>Зарегистрироваться</a></li>
                 <li id="loginButton"><a href data-toggle="modal" data-target="#myLoginModal"><span class="glyphicon glyphicon-log-in"></span>Войти</a></li>
@@ -60,8 +57,9 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="ParseRegisterResponseMsg();">Зарегистрироваться</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <a class="btn btn-primary" role="button" onclick="ParseRegisterResponseMsg();">Зарегистрироваться</a>
+                    <a class="btn btn-default" role="button" data-dismiss="modal"  >Закрыть</a>
+                  
                 </div>
             </div>
         </div>
@@ -93,8 +91,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="ParseResponseMsg();">Войти</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <a class="btn btn-primary" role="button" onclick="ParseResponseMsg();">Войти </a>
+                    <a class="btn btn-default" role="button" data-dismiss="modal">Закрыть</a>
                 </div>
             </div>
         </div>
@@ -150,8 +148,8 @@
     </div>
     <script src="MainPageScripts.js"></script>
     <script>
-         window.setInterval(LoadCanvases, 5000);// Времено отключаю
-        window.setInterval(GetCurrentUser, 5000);
+         window.setInterval(LoadCanvases, 3000);
+        window.setInterval(GetCurrentUser, 3000);
     </script>
 
 </body>

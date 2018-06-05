@@ -59,6 +59,28 @@ namespace BackToTheDrawingBoard.Controllers
                 return BadRequest(ModelState);
             }
 
+       
+ var existingCanvas= await _context.Canvas.Where(s => s.Id ==id).FirstOrDefaultAsync();
+
+
+            if (existingCanvas != null)
+            {
+                existingCanvas.String = canvas.String;
+
+                _context.SaveChanges();
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+
+          
+           /* if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id != canvas.Id)
             {
                 return BadRequest();
@@ -82,7 +104,7 @@ namespace BackToTheDrawingBoard.Controllers
                 }
             }
 
-            return NoContent();
+            return NoContent();*/
         }
 
         // POST: api/Canvas
